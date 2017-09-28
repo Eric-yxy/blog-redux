@@ -32,9 +32,15 @@ const actions = {
         }
     },
     toggleRegisterLayer : ()=>{
-        return{
-            type : 'TOGGLE_REGISTER'
+        return dispatch=>{
+            dispatch(actions.loginIn());
+            return{
+                type : 'TOGGLE_REGISTER'
+            }
         }
+        //return{
+        //    type : 'TOGGLE_REGISTER'
+        //}
     }
 }
 

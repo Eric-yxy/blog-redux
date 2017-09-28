@@ -53,11 +53,9 @@ class HeaderCom extends Component{
         )
     }
     showLoginLayer() {
-        console.log(this);
         this.props.dispatch(actions.showLoginLayer());
     }
     showRegisterLayer() {
-        console.log('register show');
         this.props.dispatch(actions.toggleRegisterLayer());
     }
 }

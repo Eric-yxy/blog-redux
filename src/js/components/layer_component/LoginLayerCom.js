@@ -6,7 +6,6 @@ import {LoginForm} from '../content_component/RightContentCom.js'
 
 class LoginLayerCom extends Component{
     render(){
-        console.log(this.props);
         return (
             <section id="login-layer" ref='loginLayer' style={{display : this.props.loginLayerVisibility ? 'block' : 'none'}}>
                 <div id="login-layer-wrap">

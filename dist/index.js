@@ -57,32 +57,40 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reduxThunk = __webpack_require__(225);
+
+	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
+
 	var _reactDom = __webpack_require__(33);
 
 	var _redux = __webpack_require__(179);
 
 	var _reactRedux = __webpack_require__(194);
 
-	var _app = __webpack_require__(215);
+	var _app = __webpack_require__(211);
 
 	var _app2 = _interopRequireDefault(_app);
 
-	var _mainReducer = __webpack_require__(211);
+	var _mainReducer = __webpack_require__(219);
 
 	var _mainReducer2 = _interopRequireDefault(_mainReducer);
 
-	var _action = __webpack_require__(214);
+	var _action = __webpack_require__(212);
 
 	var _action2 = _interopRequireDefault(_action);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var store = (0, _redux.createStore)(_mainReducer2.default);
-
-	store.subscribe(function () {
-	    console.log(store.getState());
-	});
-
+	var store = (0, _redux.createStore)(_mainReducer2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default));
+	var log = function log(store) {
+	    var next = store.dispatch;
+	    store.dispatch = function (action) {
+	        console.log('dispatching', action);
+	        var result = next(action);
+	        console.log('next state', store.getState());
+	    };
+	};
+	log(store);
 	(0, _reactDom.render)(_react2.default.createElement(
 	    _reactRedux.Provider,
 	    { store: store },
@@ -23631,150 +23639,6 @@
 	    value: true
 	});
 
-	var _doLogin = __webpack_require__(212);
-
-	var _doLogin2 = _interopRequireDefault(_doLogin);
-
-	var _doBlogList = __webpack_require__(213);
-
-	var _doBlogList2 = _interopRequireDefault(_doBlogList);
-
-	var _doUserData = __webpack_require__(220);
-
-	var _doUserData2 = _interopRequireDefault(_doUserData);
-
-	var _doLoginLayerVis = __webpack_require__(223);
-
-	var _doLoginLayerVis2 = _interopRequireDefault(_doLoginLayerVis);
-
-	var _doRegisterLayerVis = __webpack_require__(224);
-
-	var _doRegisterLayerVis2 = _interopRequireDefault(_doRegisterLayerVis);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.default = function () {
-	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	    var action = arguments[1];
-
-	    return {
-	        isLogin: (0, _doLogin2.default)(state.isLogin, action),
-	        blogList: (0, _doBlogList2.default)(state.blogList, action),
-	        userData: (0, _doUserData2.default)(state.userData, action),
-	        loginLayerVisibility: (0, _doLoginLayerVis2.default)(state.loginLayerVisibility, action),
-	        registerLayerVisibility: (0, _doRegisterLayerVis2.default)(state.registerLayerVisibility, action)
-	    };
-	};
-
-/***/ },
-/* 212 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	var doLogin = function doLogin() {
-	    var isLogin = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'false';
-	    var action = arguments[1];
-
-	    switch (action.type) {
-	        case 'LOGIN_IN':
-	            return 'true';
-	        case 'LOGIN_OUT':
-	            return 'false';
-	        default:
-	            return isLogin;
-	    }
-	};
-
-	exports.default = doLogin;
-
-/***/ },
-/* 213 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	var doBlogList = function doBlogList() {
-	    var blogList = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-	    var action = arguments[1];
-
-	    switch (action.type) {
-	        case 'INIT_BLOG':
-	            return action.blogList;
-	        default:
-	            return blogList;
-	    }
-	};
-
-	exports.default = doBlogList;
-
-/***/ },
-/* 214 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	var actions = {
-	    loginIn: function loginIn() {
-	        return {
-	            type: 'LOGIN_IN'
-	        };
-	    },
-	    loginOut: function loginOut() {
-	        return {
-	            type: 'LOGIN_OUT'
-	        };
-	    },
-	    initBLogList: function initBLogList(blogList) {
-	        return {
-	            type: 'INIT_BLOG',
-	            blogList: blogList
-	        };
-	    },
-	    initUserData: function initUserData(userData) {
-	        return {
-	            type: 'INIT_USERDATA',
-	            userData: userData
-	        };
-	    },
-	    showLoginLayer: function showLoginLayer() {
-	        return {
-	            type: 'SHOW_LOGIN_LAYER'
-	        };
-	    },
-	    hideLoginLayer: function hideLoginLayer() {
-	        return {
-	            type: 'HIDE_LOGIN_LAYER'
-	        };
-	    },
-	    toggleRegisterLayer: function toggleRegisterLayer() {
-	        return {
-	            type: 'TOGGLE_REGISTER'
-	        };
-	    }
-	};
-
-	exports.default = actions;
-
-/***/ },
-/* 215 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(2);
@@ -23785,31 +23649,31 @@
 
 	var _reactRedux = __webpack_require__(194);
 
-	var _action = __webpack_require__(214);
+	var _action = __webpack_require__(212);
 
 	var _action2 = _interopRequireDefault(_action);
 
-	var _index = __webpack_require__(216);
+	var _index = __webpack_require__(213);
 
 	var _index2 = _interopRequireDefault(_index);
 
-	var _MiddleContentCom = __webpack_require__(217);
+	var _MiddleContentCom = __webpack_require__(214);
 
 	var _MiddleContentCom2 = _interopRequireDefault(_MiddleContentCom);
 
-	var _LeftContentCom = __webpack_require__(218);
+	var _LeftContentCom = __webpack_require__(215);
 
 	var _LeftContentCom2 = _interopRequireDefault(_LeftContentCom);
 
-	var _RightContentCom = __webpack_require__(219);
+	var _RightContentCom = __webpack_require__(216);
 
 	var _RightContentCom2 = _interopRequireDefault(_RightContentCom);
 
-	var _RegisterLayerCom = __webpack_require__(221);
+	var _RegisterLayerCom = __webpack_require__(217);
 
 	var _RegisterLayerCom2 = _interopRequireDefault(_RegisterLayerCom);
 
-	var _LoginLayerCom = __webpack_require__(222);
+	var _LoginLayerCom = __webpack_require__(218);
 
 	var _LoginLayerCom2 = _interopRequireDefault(_LoginLayerCom);
 
@@ -23900,7 +23764,64 @@
 	exports.default = (0, _reactRedux.connect)(select)(App);
 
 /***/ },
-/* 216 */
+/* 212 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var actions = {
+	    loginIn: function loginIn() {
+	        return {
+	            type: 'LOGIN_IN'
+	        };
+	    },
+	    loginOut: function loginOut() {
+	        return {
+	            type: 'LOGIN_OUT'
+	        };
+	    },
+	    initBLogList: function initBLogList(blogList) {
+	        return {
+	            type: 'INIT_BLOG',
+	            blogList: blogList
+	        };
+	    },
+	    initUserData: function initUserData(userData) {
+	        return {
+	            type: 'INIT_USERDATA',
+	            userData: userData
+	        };
+	    },
+	    showLoginLayer: function showLoginLayer() {
+	        return {
+	            type: 'SHOW_LOGIN_LAYER'
+	        };
+	    },
+	    hideLoginLayer: function hideLoginLayer() {
+	        return {
+	            type: 'HIDE_LOGIN_LAYER'
+	        };
+	    },
+	    toggleRegisterLayer: function toggleRegisterLayer() {
+	        return function (dispatch) {
+	            dispatch(actions.loginIn());
+	            return {
+	                type: 'TOGGLE_REGISTER'
+	            };
+	        };
+	        //return{
+	        //    type : 'TOGGLE_REGISTER'
+	        //}
+	    }
+	};
+
+	exports.default = actions;
+
+/***/ },
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -23919,7 +23840,7 @@
 
 	var _reactRedux = __webpack_require__(194);
 
-	var _action = __webpack_require__(214);
+	var _action = __webpack_require__(212);
 
 	var _action2 = _interopRequireDefault(_action);
 
@@ -24043,13 +23964,11 @@
 	    }, {
 	        key: 'showLoginLayer',
 	        value: function showLoginLayer() {
-	            console.log(this);
 	            this.props.dispatch(_action2.default.showLoginLayer());
 	        }
 	    }, {
 	        key: 'showRegisterLayer',
 	        value: function showRegisterLayer() {
-	            console.log('register show');
 	            this.props.dispatch(_action2.default.toggleRegisterLayer());
 	        }
 	    }]);
@@ -24148,7 +24067,7 @@
 	exports.default = (0, _reactRedux.connect)(select)(HeaderCom);
 
 /***/ },
-/* 217 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24232,7 +24151,7 @@
 	exports.default = MiddleContentCom;
 
 /***/ },
-/* 218 */
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24316,7 +24235,7 @@
 	exports.default = LeftContentCom;
 
 /***/ },
-/* 219 */
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24595,30 +24514,7 @@
 	exports.LoginForm = LoginForm;
 
 /***/ },
-/* 220 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	var doUserData = function doUserData() {
-	    var userData = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-	    var action = arguments[1];
-
-	    switch (action.type) {
-	        case 'INIT_USERDATA':
-	            return action.userData;
-	        default:
-	            return userData;
-	    }
-	};
-
-	exports.default = doUserData;
-
-/***/ },
-/* 221 */
+/* 217 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24637,7 +24533,7 @@
 
 	var _reactRedux = __webpack_require__(194);
 
-	var _action = __webpack_require__(214);
+	var _action = __webpack_require__(212);
 
 	var _action2 = _interopRequireDefault(_action);
 
@@ -24757,7 +24653,7 @@
 	exports.default = (0, _reactRedux.connect)(select)(RegisterLayerCom);
 
 /***/ },
-/* 222 */
+/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -24776,11 +24672,11 @@
 
 	var _reactRedux = __webpack_require__(194);
 
-	var _action = __webpack_require__(214);
+	var _action = __webpack_require__(212);
 
 	var _action2 = _interopRequireDefault(_action);
 
-	var _RightContentCom = __webpack_require__(219);
+	var _RightContentCom = __webpack_require__(216);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24804,7 +24700,6 @@
 	        value: function render() {
 	            var _this2 = this;
 
-	            console.log(this.props);
 	            return _react2.default.createElement(
 	                'section',
 	                { id: 'login-layer', ref: 'loginLayer', style: { display: this.props.loginLayerVisibility ? 'block' : 'none' } },
@@ -24863,6 +24758,122 @@
 	exports.default = (0, _reactRedux.connect)(select)(LoginLayerCom);
 
 /***/ },
+/* 219 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _doLogin = __webpack_require__(220);
+
+	var _doLogin2 = _interopRequireDefault(_doLogin);
+
+	var _doBlogList = __webpack_require__(221);
+
+	var _doBlogList2 = _interopRequireDefault(_doBlogList);
+
+	var _doUserData = __webpack_require__(222);
+
+	var _doUserData2 = _interopRequireDefault(_doUserData);
+
+	var _doLoginLayerVis = __webpack_require__(223);
+
+	var _doLoginLayerVis2 = _interopRequireDefault(_doLoginLayerVis);
+
+	var _doRegisterLayerVis = __webpack_require__(224);
+
+	var _doRegisterLayerVis2 = _interopRequireDefault(_doRegisterLayerVis);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function () {
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	    var action = arguments[1];
+
+	    return {
+	        isLogin: (0, _doLogin2.default)(state.isLogin, action),
+	        blogList: (0, _doBlogList2.default)(state.blogList, action),
+	        userData: (0, _doUserData2.default)(state.userData, action),
+	        loginLayerVisibility: (0, _doLoginLayerVis2.default)(state.loginLayerVisibility, action),
+	        registerLayerVisibility: (0, _doRegisterLayerVis2.default)(state.registerLayerVisibility, action)
+	    };
+	};
+
+/***/ },
+/* 220 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var doLogin = function doLogin() {
+	    var isLogin = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'false';
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case 'LOGIN_IN':
+	            return 'true';
+	        case 'LOGIN_OUT':
+	            return 'false';
+	        default:
+	            return isLogin;
+	    }
+	};
+
+	exports.default = doLogin;
+
+/***/ },
+/* 221 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var doBlogList = function doBlogList() {
+	    var blogList = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case 'INIT_BLOG':
+	            return action.blogList;
+	        default:
+	            return blogList;
+	    }
+	};
+
+	exports.default = doBlogList;
+
+/***/ },
+/* 222 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var doUserData = function doUserData() {
+	    var userData = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case 'INIT_USERDATA':
+	            return action.userData;
+	        default:
+	            return userData;
+	    }
+	};
+
+	exports.default = doUserData;
+
+/***/ },
 /* 223 */
 /***/ function(module, exports) {
 
@@ -24909,6 +24920,34 @@
 	};
 
 	exports.default = doRegisterLayerVis;
+
+/***/ },
+/* 225 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	exports.__esModule = true;
+	function createThunkMiddleware(extraArgument) {
+	  return function (_ref) {
+	    var dispatch = _ref.dispatch,
+	        getState = _ref.getState;
+	    return function (next) {
+	      return function (action) {
+	        if (typeof action === 'function') {
+	          return action(dispatch, getState, extraArgument);
+	        }
+
+	        return next(action);
+	      };
+	    };
+	  };
+	}
+
+	var thunk = createThunkMiddleware();
+	thunk.withExtraArgument = createThunkMiddleware;
+
+	exports['default'] = thunk;
 
 /***/ }
 /******/ ]);
